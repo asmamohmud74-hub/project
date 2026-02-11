@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asma Beauty Salon</title>
+
+  <!--  CSS gudaha -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffe6f0;
+    }
+
+    .container {
+      width: 420px;
+      margin: 50px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: hotpink;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    button:hover {
+      background: deeppink;
+    }
+
+    #message {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f8d7e8;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1> Asma Beauty Salon</h1>
+    <p>Book your beauty service easily!</p>
+
+    <!--  Input Field -->
+    <input type="text" id="customerName" placeholder="Enter your name">
+
+    <!--  Service Selection -->
+    <select id="service">
+      <option value="">-- Select Service --</option>
+      <option value="20">Hair Styling - $20</option>
+      <option value="15">Makeup - $15</option>
+      <option value="10">henna - $10</option>
+      <option value="25">Facial Treatment - $25</option>
+    </select>
+
+    <!--  Date Input -->
+    <input type="date" id="bookingDate">
+
+    <!--  Button -->
+    <button id="bookBtn">Book Now</button>
+
+    <!-- Feedback -->
+    <p id="message"></p>
+
+    <!--  Results -->
+    <h2> Booking Summary</h2>
+    <ul id="bookingList"></ul>
+
+    <h3>Total Price: $<span id="totalPrice">0</span></h3>
+  </div>
+
+  <!--  JavaScript gudaha -->
+  <script>
+    // Array to store bookings
+    let bookings = [];
+    let total = 0;
+
+    // DOM Elements
+    const customerName = document.getElementById("customerName");
+    const service = document.getElementById("service");
+    const bookingDate = document.getElementById("bookingDate");
+    const bookBtn = document.getElementById("bookBtn");
+    const bookingList = document.getElementById("bookingList");
+    const totalPrice = document.getElementById("totalPrice");
+    const message = document.getElementById("message");
+
+    // Function to add booking
+    function bookService() {
+      let name = customerName.value.trim();
+      let servicePrice = service.value;
+      let serviceText = service.options[service.selectedIndex].text;
+      let date = bookingDate.value;
+
+      //  Input Validation
+      if (name === "" || servicePrice === "" || date === "") {
+        message.style.color = "red";
+        message.textContent = " Please fill all fields correctly!";
+        return;
+      }
+
+      // Store booking object
+      let booking = {
+        customer: name,
+        service: serviceText,
+        price: Number(servicePrice),
+        date: date
+      };
+
+      bookings.push(booking);
+
+      // Update total price
+      total += booking.price;
+
+      // Success message
+      message.style.color = "green";
+      message.textContent = "✅ Booking added successfully!";
+
+      // Update UI dynamically
+      displayBookings();
+    }
+
+    // Function to display bookings
+    function displayBookings() {
+      bookingList.innerHTML = "";
+
+      bookings.forEach((b) => {
+        let li = document.createElement("li");
+        li.textContent =
+          '${b.customer} booked ${b.service} on ${b.date};'
+        bookingList.appendChild(li);
+      });
+
+      totalPrice.textContent = total;
+    }
+
+    // ✅ Event Handling
+    bookBtn.addEventListener("click", bookService);
+  </script>
+
+</body>
+</html>
